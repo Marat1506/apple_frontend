@@ -1,0 +1,54 @@
+{
+  "common": {
+    "welcome": "مرحباً",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "remove": "إزالة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "store": "المتجر",
+    "cart": "السلة",
+    "account": "الحساب",
+    "admin": "المسؤول",
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج"
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "buyNow": "اشتري الآن",
+    "learnMore": "اعرف المزيد",
+    "specifications": "المواصفات",
+    "description": "الوصف",
+    "relatedProducts": "منتجات ذات صلة",
+    "outOfStock": "غير متوفر",
+    "inStock": "متوفر"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلة التسوق فارغة",
+    "continueShopping": "متابعة التسوق",
+    "subtotal": "المجموع الفرعي",
+    "total": "الإجمالي",
+    "checkout": "إتمام الطلب",
+    "remove": "إزالة"
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "shipping": "معلومات الشحن",
+    "payment": "الدفع",
+    "review": "مراجعة الطلب",
+    "placeOrder": "إتمام الطلب"
+  }
+}
+
