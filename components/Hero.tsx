@@ -85,7 +85,7 @@ const Hero = () => {
             <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-black">
               {heroData.image ? (
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}${heroData.image}`}
+                  src={`${process.env.NEXT_PUBLIC_API_URL || ""}${heroData.image}`}
                   alt="Hero"
                   className="w-full h-full object-cover"
                   loading="eager"

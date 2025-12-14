@@ -2,7 +2,19 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export const api = {
   async request(endpoint: string, options: RequestInit = {}) {
-    const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    // Try to get token from localStorage first, then from cookies
+    let token = null;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem("auth_token");
+      if (!token) {
+        // Try to get from cookies as fallback
+        const cookies = document.cookie.split(';');
+        const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth_token='));
+        if (authCookie) {
+          token = authCookie.split('=')[1];
+        }
+      }
+    }
     
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -115,6 +127,8 @@ export const api = {
       if (data.access_token) {
         if (typeof window !== "undefined") {
           localStorage.setItem("auth_token", data.access_token);
+          // Also save to cookies for persistence
+          document.cookie = `auth_token=${data.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
         }
       }
       return data;
@@ -127,6 +141,8 @@ export const api = {
       if (data.access_token) {
         if (typeof window !== "undefined") {
           localStorage.setItem("auth_token", data.access_token);
+          // Also save to cookies for persistence
+          document.cookie = `auth_token=${data.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
         }
       }
       return data;
@@ -139,6 +155,8 @@ export const api = {
       }
       if (typeof window !== "undefined") {
         localStorage.removeItem("auth_token");
+        // Also remove from cookies
+        document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
     },
     getMe: () => api.request("/users/me"),
