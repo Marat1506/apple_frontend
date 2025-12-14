@@ -10,10 +10,6 @@ interface HeroSettings {
   id: string;
   key: string;
   value: {
-    title: string;
-    subtitle: string;
-    buttonText: string;
-    buttonLink: string;
     image: string | null;
   };
 }
@@ -47,12 +43,12 @@ const Hero = () => {
     );
   }
 
-  const heroData = settings?.value || {
+  const heroData = {
     title: t("home.hero.title"),
     subtitle: t("home.hero.subtitle"),
     buttonText: t("hero.shopNow"),
     buttonLink: "/shop",
-    image: null,
+    image: settings?.value?.image || null,
   };
 
   return (
