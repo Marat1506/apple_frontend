@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { api } from "@/lib/api";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSearchParams } from "next/navigation";
 
-export default function ShopPage() {
+function ShopContent() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
@@ -263,5 +263,17 @@ export default function ShopPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-2xl font-bold animate-pulse">Loading...</div>
+      </div>
+    }>
+      <ShopContent />
+    </Suspense>
   );
 }
