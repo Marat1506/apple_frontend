@@ -98,45 +98,47 @@ export default function ShopProductCard({ product }: ShopProductCardProps) {
         <img
           src={product.images[0] || "/placeholder.svg"}
           alt={product.name}
-          className="w-full h-full object-contain p-6 transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-contain p-4 sm:p-6 transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-300" />
       </div>
 
-      <CardContent className="p-4 flex-grow flex flex-col">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+      <CardContent className="p-2 sm:p-3 flex-grow flex flex-col">
+        <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem]">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-grow">
+        <p className="text-xs text-gray-600 mb-2 sm:mb-3 line-clamp-2 flex-grow">
           {product.description}
         </p>
-        <div className="flex items-center justify-between mt-auto">
-          <p className="text-2xl font-bold text-gray-900">
+        <div className="flex items-center justify-between mt-auto mb-1 sm:mb-2">
+          <p className="text-base sm:text-lg font-bold text-gray-900">
             {formatPrice(product.price, currency)}
           </p>
         </div>
         
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-3">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1"
+            className="flex-1 text-xs px-2 py-2 h-8 min-w-0"
             onClick={(e) => {
               e.stopPropagation();
               handleViewProduct();
             }}
           >
-            <Eye className="w-4 h-4 mr-2" />
-            {t("product.view")}
+            <Eye className="w-3 h-3 mr-1 flex-shrink-0" />
+            <span className="truncate">{t("product.view")}</span>
           </Button>
           <Button
             size="sm"
-            className="flex-1"
+            className="flex-1 text-xs px-2 py-2 h-8 min-w-0"
             onClick={handleAddToCart}
             disabled={adding || product.stock === 0}
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            {adding ? t("product.adding") : t("product.addToCart")}
+            <ShoppingCart className="w-3 h-3 mr-1 flex-shrink-0" />
+            <span className="truncate">
+              {adding ? t("product.adding") : t("product.addToCart")}
+            </span>
           </Button>
         </div>
       </CardContent>

@@ -8,9 +8,11 @@ import ShopProductCard from "@/components/ShopProductCard";
 import { Filter, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSearchParams } from "next/navigation";
 
 export default function ShopPage() {
   const { t, language } = useLanguage();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,15 @@ export default function ShopPage() {
       ]);
       setProducts(Array.isArray(productsRes) ? productsRes : []);
       setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
+      
+      // Set category from URL parameter
+      const categorySlug = searchParams.get('category');
+      if (categorySlug && Array.isArray(categoriesRes)) {
+        const category = categoriesRes.find(cat => cat.slug === categorySlug);
+        if (category) {
+          setSelectedCategory(category.id);
+        }
+      }
     } catch (error) {
       console.error("Failed to fetch data:", error);
     } finally {
@@ -37,7 +48,7 @@ export default function ShopPage() {
 
   useEffect(() => {
     fetchData();
-  }, [language]);
+  }, [language, searchParams]);
 
   const filteredProducts = products
     .filter((product) => {
@@ -88,11 +99,29 @@ export default function ShopPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              {t("shop.title")}
+              {selectedCategory ? 
+                categories.find(cat => cat.id === selectedCategory)?.name || t("shop.title") : 
+                t("shop.title")
+              }
             </h1>
             <p className="text-muted-foreground mb-6">
-              {t("shop.subtitle")}
+              {selectedCategory ? 
+                categories.find(cat => cat.id === selectedCategory)?.description || t("shop.subtitle") :
+                t("shop.subtitle")
+              }
             </p>
+
+            {/* Show all products button when category is selected */}
+            {selectedCategory && (
+              <div className="mb-4">
+                <button
+                  onClick={() => setSelectedCategory("")}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  ← {t("shop.allProducts")}
+                </button>
+              </div>
+            )}
             
             {/* Search Bar */}
             <div className="relative max-w-md">

@@ -2,9 +2,11 @@
 
 import { Laptop, Smartphone, Tablet, Watch, Glasses, Headphones, Locate, Tv, Speaker, Package, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRouter } from "next/navigation";
 
 const Categories = () => {
   const { t } = useLanguage();
+  const router = useRouter();
 
   const categories = [
     { name: t("categories.mac"), icon: Laptop, slug: "mac" },
@@ -33,12 +35,8 @@ const Categories = () => {
                   className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-card hover:bg-muted transition-all duration-300 group hover-lift cursor-pointer animate-fade-in-up flex-shrink-0 w-[100px] sm:w-auto"
                   style={{ animationDelay: `${index * 0.05}s` }}
                   onClick={() => {
-                    // Navigate to category page or filter products
-                    // For now, just scroll to products section
-                    const productsSection = document.getElementById("store");
-                    if (productsSection) {
-                      productsSection.scrollIntoView({ behavior: "smooth" });
-                    }
+                    // Navigate to shop page with category filter
+                    router.push(`/shop?category=${category.slug}`);
                   }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
