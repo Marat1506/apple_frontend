@@ -95,10 +95,73 @@ const Navigation = () => {
             )}
           </div>
 
+          {/* Mobile Navigation */}
+          <div className="flex md:hidden items-center space-x-4">
+            {/* Language Selector */}
+            <LanguageSelector />
+
+            {/* Currency Selector */}
+            <CurrencySelector />
+
+            {/* Favorites */}
+            {user && (
+              <Link 
+                href="/favorites" 
+                className="text-muted-foreground hover:text-foreground transition-colors relative"
+              >
+                <Heart className="h-4 w-4" />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                    {favorites.length > 9 ? '9+' : favorites.length}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            {/* Shopping Bag */}
+            <Link 
+              href="/cart" 
+              className="text-muted-foreground hover:text-foreground transition-colors relative"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {cartCount > 9 ? '9+' : cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Search */}
+            <button
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => router.push("/shop")}
+              aria-label="Search products"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+
+            {/* User Profile */}
+            {user ? (
+              <button 
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => router.push("/profile")}
+              >
+                <User className="h-4 w-4" />
+              </button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push("/auth")}
+                className="text-[12px] h-7 px-2 text-muted-foreground hover:text-foreground"
+              >
+                <User className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
 
         </div>
       </div>
-
 
     </nav>
   );
