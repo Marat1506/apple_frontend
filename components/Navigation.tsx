@@ -124,7 +124,7 @@ const Navigation = () => {
                 className="block px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("favorites.title")} {favorites.length > 0 && `(${favorites.length})`}
+                {t("favorites.title")}
               </Link>
             )}
             <Link
@@ -132,7 +132,7 @@ const Navigation = () => {
               className="block px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              {t("nav.cart")} {cartCount > 0 && `(${cartCount})`}
+              {t("nav.cart")}
             </Link>
             {user ? (
               <button
