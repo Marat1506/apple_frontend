@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, ShoppingBag, User, Search, Heart } from "lucide-react";
+
+import { ShoppingBag, User, Search, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,6 @@ const Navigation = () => {
   const { cartCount } = useCart();
   const { favorites } = useFavorites();
   const { t } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50">
@@ -96,68 +95,11 @@ const Navigation = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-background border-t border-border">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              href="/"
-              className="block px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {t("nav.store")}
-            </Link>
-            {user && (
-              <Link
-                href="/favorites"
-                className="block px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {t("favorites.title")}
-              </Link>
-            )}
-            <Link
-              href="/cart"
-              className="block px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {t("nav.cart")}
-            </Link>
-            {user ? (
-              <button
-                onClick={() => {
-                  router.push("/profile");
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
-              >
-                {t("nav.profile")}
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  router.push("/auth");
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors"
-              >
-                {t("nav.signIn")}
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+
     </nav>
   );
 };
