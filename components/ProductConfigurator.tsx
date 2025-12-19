@@ -21,10 +21,51 @@ interface ProductConfiguratorProps {
   }) => void;
 }
 
+const colorMap: Record<string, string> = {
+  // Apple Standard Colors
+  "space gray": "#535355",
+  "space grey": "#535355", 
+  "silver": "#E3E4E5",
+  "gold": "#FAD5BD",
+  "rose gold": "#E8B5A0",
+  "midnight": "#2D2D2F",
+  "black": "#1D1D1F",
+  "white": "#F5F5F7",
+  
+  // Product Red
+  "red": "#BA0C2F",
+  "product red": "#BA0C2F",
+  
+  // iPhone 15 Pro Colors
+  "natural titanium": "#A8A8A3",
+  "blue titanium": "#5F7C95",
+  "white titanium": "#F2F2F7",
+  "black titanium": "#1D1D1F",
+  
+  // iPhone 15 Colors  
+  "pink": "#E8B5CE",
+  "yellow": "#F7E98E",
+  "green": "#A7C957",
+  "blue": "#4A90E2",
+  
+  // iPad Colors
+  "purple": "#8E4EC6",
+  "starlight": "#F0F0F0",
+  "space black": "#1D1D1F",
+  
+  // Default fallback
+  "default": "#9CA3AF"
+};
+
+const getColorHex = (colorName: string): string => {
+  const normalizedName = colorName.toLowerCase().trim();
+  return colorMap[normalizedName] || colorMap["default"];
+};
+
 const defaultColors = [
   { id: "space-gray", name: "Space Gray", hex: "#535355" },
   { id: "silver", name: "Silver", hex: "#E3E4E5" },
-  { id: "gold", name: "Gold", hex: "#FAD7BD" },
+  { id: "gold", name: "Gold", hex: "#FAD5BD" },
   { id: "midnight", name: "Midnight", hex: "#2D2D2F" },
 ];
 
@@ -40,14 +81,11 @@ export default function ProductConfigurator({
   const colors =
     (Array.isArray(rawColors) && rawColors.length > 0
       ? typeof rawColors[0] === "string"
-        ? (rawColors as string[]).map((name, index) => {
-            const base = defaultColors[index % defaultColors.length];
-            return {
-              id: name.toLowerCase().replace(/\s+/g, "-"),
-              name,
-              hex: base.hex,
-            };
-          })
+        ? (rawColors as string[]).map((name) => ({
+            id: name.toLowerCase().replace(/\s+/g, "-"),
+            name,
+            hex: getColorHex(name),
+          }))
         : (rawColors as Array<{ id: string; name: string; hex: string }>)
       : defaultColors);
 
