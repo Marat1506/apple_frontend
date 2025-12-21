@@ -79,7 +79,7 @@ export default function ShopProductCard({ product }: ShopProductCardProps) {
       className="group overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col"
       onClick={handleViewProduct}
     >
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
+      <div className="relative aspect-square overflow-hidden bg-muted/50">
         {product.badge && (
           <Badge className="absolute top-3 left-3 z-10 bg-blue-600 text-white">
             {product.badge}
@@ -104,14 +104,14 @@ export default function ShopProductCard({ product }: ShopProductCardProps) {
       </div>
 
       <CardContent className="p-2 sm:p-3 flex-grow flex flex-col">
-        <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem]">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem]">
           {product.name}
         </h3>
-        <p className="text-xs text-gray-600 mb-2 sm:mb-3 line-clamp-2 flex-grow">
+        <p className="text-xs text-muted-foreground mb-2 sm:mb-3 line-clamp-2 flex-grow">
           {product.description}
         </p>
         <div className="flex items-center justify-between mt-auto mb-1 sm:mb-2">
-          <p className="text-base sm:text-lg font-bold text-gray-900">
+          <p className="text-base sm:text-lg font-bold text-foreground">
             {formatPrice(product.price, currency)}
           </p>
         </div>

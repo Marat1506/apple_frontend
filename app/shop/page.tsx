@@ -95,7 +95,7 @@ function ShopContent() {
       <Navigation />
 
       <main className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-8 sm:px-12 lg:px-16">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -116,7 +116,7 @@ function ShopContent() {
               <div className="mb-4">
                 <button
                   onClick={() => setSelectedCategory("")}
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  className="text-primary hover:text-primary/80 text-sm font-medium"
                 >
                   ← {t("shop.allProducts")}
                 </button>
@@ -125,7 +125,7 @@ function ShopContent() {
             
             {/* Search Bar */}
             <div className="relative max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
                 type="text"
                 placeholder={t("shop.search")}
@@ -142,7 +142,7 @@ function ShopContent() {
               {/* Mobile Filter Toggle */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="lg:hidden w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 rounded-lg mb-4"
+                className="lg:hidden w-full flex items-center justify-center gap-2 px-4 py-3 bg-muted rounded-lg mb-4"
               >
                 <Filter className="w-5 h-5" />
                 {t("shop.filters")}
@@ -151,13 +151,13 @@ function ShopContent() {
               <div
                 className={`${
                   showFilters ? "block" : "hidden"
-                } lg:block space-y-6 bg-white p-6 rounded-lg shadow-sm`}
+                } lg:block space-y-6 bg-card p-6 rounded-lg shadow-sm border border-border`}
               >
                 <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-lg">{t("shop.filters")}</h3>
                     <button
                       onClick={clearFilters}
-                      className="text-sm text-blue-600 hover:text-blue-700"
+                      className="text-sm text-primary hover:text-primary/80"
                     >
                       {t("shop.clearAll")}
                     </button>
@@ -165,26 +165,26 @@ function ShopContent() {
 
                 {/* Category Filter */}
                 <div>
-                  <h4 className="font-medium mb-3">{t("shop.category")}</h4>
+                  <h4 className="font-medium mb-3 text-foreground">{t("shop.category")}</h4>
                   <div className="space-y-2">
-                    <label className="flex items-center">
+                    <label className="flex items-center text-foreground cursor-pointer">
                       <input
                         type="radio"
                         name="category"
                         checked={selectedCategory === ""}
                         onChange={() => setSelectedCategory("")}
-                        className="mr-2"
+                        className="mr-2 accent-primary"
                       />
                       {t("shop.allProducts")}
                     </label>
                     {categories.map((category) => (
-                      <label key={category.id} className="flex items-center">
+                      <label key={category.id} className="flex items-center text-foreground cursor-pointer">
                         <input
                           type="radio"
                           name="category"
                           checked={selectedCategory === category.id}
                           onChange={() => setSelectedCategory(category.id)}
-                          className="mr-2"
+                          className="mr-2 accent-primary"
                         />
                         {category.name}
                       </label>
@@ -194,7 +194,7 @@ function ShopContent() {
 
                 {/* Price Range */}
                 <div>
-                  <h4 className="font-medium mb-3">{t("shop.priceRange")}</h4>
+                  <h4 className="font-medium mb-3 text-foreground">{t("shop.priceRange")}</h4>
                   <div className="space-y-3">
                     <div>
                       <input
@@ -208,7 +208,7 @@ function ShopContent() {
                         }
                         className="w-full"
                       />
-                      <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <div className="flex justify-between text-sm text-muted-foreground mt-2">
                         <span>${priceRange[0]}</span>
                         <span>${priceRange[1]}</span>
                       </div>
@@ -218,11 +218,11 @@ function ShopContent() {
 
                 {/* Sort By */}
                 <div>
-                  <h4 className="font-medium mb-3">{t("shop.sortBy")}</h4>
+                  <h4 className="font-medium mb-3 text-foreground">{t("shop.sortBy")}</h4>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   >
                     <option value="featured">{t("shop.sortFeatured")}</option>
                     <option value="price-asc">{t("shop.sortPriceAsc")}</option>
@@ -235,7 +235,7 @@ function ShopContent() {
 
             {/* Products Grid */}
             <div className="flex-1">
-              <div className="mb-4 text-sm text-gray-600">
+              <div className="mb-4 text-sm text-muted-foreground">
                 {t("shop.showing")} {filteredProducts.length} {t("shop.of")} {products.length} {t("shop.products")}
               </div>
 
@@ -247,10 +247,10 @@ function ShopContent() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-xl text-gray-500">{t("shop.noProducts")}</p>
+                  <p className="text-xl text-muted-foreground">{t("shop.noProducts")}</p>
                   <button
                     onClick={clearFilters}
-                    className="mt-4 text-blue-600 hover:text-blue-700"
+                    className="mt-4 text-primary hover:text-primary/80"
                   >
                     {t("shop.clearFilters")}
                   </button>

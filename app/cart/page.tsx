@@ -107,7 +107,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-background pb-16 md:pb-0">
         <Navigation />
         <main className="pt-20 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="px-8 sm:px-12 lg:px-16">
             <Skeleton className="h-12 w-64 mb-8" />
             <Skeleton className="h-64" />
           </div>
@@ -122,7 +122,7 @@ export default function CartPage() {
       <Navigation />
       
       <main className="pt-20 pb-16 min-h-[calc(100vh-200px)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-2">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">{t("cart.title")}</h1>
 
           {cartItems.length === 0 ? (

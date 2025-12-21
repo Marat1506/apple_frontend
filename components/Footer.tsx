@@ -21,7 +21,7 @@ const Footer = () => {
     links: ["Newsroom", "Leadership", "Career", "Investors", "Ethics & Compliance"]
   }];
   return <footer className="bg-muted/50 border-t border-border/50 pt-12 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-8 sm:px-12 lg:px-16">
         {/* Footer Links */}
         
 

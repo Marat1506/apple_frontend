@@ -162,6 +162,27 @@ export const api = {
     getMe: () => api.request("/users/me"),
   },
 
+  // Settings
+  settings: {
+    faq: {
+      getAll: (lang?: string) => {
+        const params = lang ? `?lang=${lang}` : "";
+        return api.request(`/settings/faq${params}`);
+      },
+      getById: (id: string) => api.request(`/settings/faq/${id}`),
+    },
+    aboutUs: {
+      getAll: (lang?: string) => {
+        const params = lang ? `?lang=${lang}` : "";
+        return api.request(`/settings/about-us${params}`);
+      },
+      getByKey: (key: string, lang?: string) => {
+        const params = lang ? `?lang=${lang}` : "";
+        return api.request(`/settings/about-us/${key}${params}`);
+      },
+    },
+  },
+
   // Admin
   admin: {
     dashboard: () => api.request("/admin/dashboard"),

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Providers } from "./providers";
-import { CurrencyProvider } from "@/contexts/CurrencyContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +19,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <CurrencyProvider>
-            {children}
-          </CurrencyProvider>
+          {children}
         </Providers>
       </body>
     </html>

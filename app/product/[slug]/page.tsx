@@ -106,7 +106,7 @@ export default function ProductPage() {
       <div className="min-h-screen bg-background">
         <Navigation />
         <main className="pt-14 pb-16 md:pb-0">
-          <div className="max-w-[980px] mx-auto px-6 py-12">
+          <div className="px-8 sm:px-12 lg:px-16 py-12">
             <Skeleton className="h-16 w-3/4 mx-auto mb-8" />
             <Skeleton className="h-96 w-full mb-8" />
             <Skeleton className="h-64 w-full" />
@@ -135,7 +135,7 @@ export default function ProductPage() {
       <main className="pt-14">
         {/* Hero Section */}
         <div className="bg-background">
-          <div className="max-w-[980px] mx-auto px-6 pt-12 pb-16 text-center">
+          <div className="px-8 sm:px-12 lg:px-16 pt-12 pb-16 text-center">
             {product.badge && (
               <div className="mb-4">
                 <span className="inline-block text-sm font-semibold text-primary">
@@ -157,7 +157,7 @@ export default function ProductPage() {
 
         {/* Product Image Gallery */}
         <div className="bg-background">
-          <div className="max-w-[980px] mx-auto px-6 py-12">
+          <div className="px-8 sm:px-12 lg:px-16 py-12">
             <div className="relative w-full aspect-[16/10] flex items-center justify-center bg-gradient-to-b from-background to-muted/20 rounded-3xl overflow-hidden">
               <img
                 src={product.images[0] || "/placeholder.svg"}
@@ -171,7 +171,7 @@ export default function ProductPage() {
         {/* Product Configurator */}
         {product.variants && Object.keys(product.variants).length > 0 && (
           <div className="bg-background border-t border-border">
-            <div className="max-w-[980px] mx-auto px-6 py-16">
+            <div className="px-8 sm:px-12 lg:px-16 py-16">
               <ProductConfigurator
                 variants={product.variants}
                 onVariantChange={setSelectedVariant}
@@ -182,7 +182,7 @@ export default function ProductPage() {
 
         {/* Specifications & Description */}
         <div className="bg-muted/30 border-t border-border">
-          <div className="max-w-[980px] mx-auto px-6 py-16">
+          <div className="px-8 sm:px-12 lg:px-16 py-16">
             <Tabs defaultValue="description" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="description">{t("product.description")}</TabsTrigger>
@@ -224,7 +224,7 @@ export default function ProductPage() {
 
         {/* CTA Section */}
         <div className="bg-background border-t border-border">
-          <div className="max-w-[980px] mx-auto px-6 py-20">
+          <div className="px-8 sm:px-12 lg:px-16 py-20">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
                 size="lg"

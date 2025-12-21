@@ -3,109 +3,167 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/hooks/use-toast";
+import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { Skeleton } from "@/components/ui/skeleton";
-import { User, Package, LogOut, Mail } from "lucide-react";
+import { 
+  Heart, 
+  FileText, 
+  CreditCard, 
+  Grid3X3, 
+  Globe, 
+  DollarSign, 
+  HelpCircle, 
+  Info, 
+  Sun,
+  Moon,
+  ChevronRight,
+  LogIn,
+  User,
+  ShoppingBag
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "next-themes";
 
-interface Order {
+interface ProfileMenuItem {
   id: string;
-  status: string;
-  total: number;
-  createdAt: string;
-  items: Array<{
-    product: {
-      name: string;
-      images: string[];
-    };
-    quantity: number;
-    price: number;
-  }>;
+  icon: React.ReactNode;
+  label: string;
+  href?: string;
+  requiresAuth: boolean;
+  action?: () => void;
 }
 
 export default function ProfilePage() {
   const router = useRouter();
   const { user, signOut } = useAuth();
   const { t } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/auth");
-      return;
+    setMounted(true);
+    setLoading(false);
+    // Инициализируем тему если её нет
+    if (!theme) {
+      setTheme("light");
     }
-
-    setFullName(user.fullName || "");
-    setEmail(user.email || "");
-    fetchOrders();
-  }, [user, router]);
-
-  const fetchOrders = async () => {
-    try {
-      const data = await api.orders.getAll();
-      setOrders(data);
-    } catch (error: any) {
-      console.error("Failed to fetch orders:", error);
-      toast({
-        title: t("toast.error"),
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [theme, setTheme]);
 
   const handleSignOut = async () => {
     await signOut();
     router.push("/");
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  const handleLogin = () => {
+    router.push("/auth");
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "processing":
-        return "bg-blue-100 text-blue-800";
-      case "shipped":
-        return "bg-purple-100 text-purple-800";
-      case "delivered":
-        return "bg-green-100 text-green-800";
-      case "cancelled":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+  const toggleTheme = (checked: boolean) => {
+    setTheme(checked ? "light" : "dark");
+  };
+
+  const menuItems: ProfileMenuItem[] = [
+    {
+      id: "favorites",
+      icon: <Heart className="h-5 w-5" />,
+      label: t("profile.menu.favourites"),
+      href: "/favorites",
+      requiresAuth: true,
+    },
+    {
+      id: "cart",
+      icon: <ShoppingBag className="h-5 w-5" />,
+      label: t("profile.menu.cart"),
+      href: "/cart",
+      requiresAuth: false,
+    },
+    // {
+    //   id: "invoice",
+    //   icon: <FileText className="h-5 w-5" />,
+    //   label: t("profile.menu.invoice"),
+    //   href: "/profile/invoice",
+    //   requiresAuth: true,
+    // },
+    {
+      id: "categories",
+      icon: <Grid3X3 className="h-5 w-5" />,
+      label: t("profile.menu.allCategory"),
+      href: "/shop",
+      requiresAuth: false,
+    },
+    {
+      id: "language",
+      icon: <Globe className="h-5 w-5" />,
+      label: t("profile.menu.chooseLanguage"),
+      href: "/profile/language",
+      requiresAuth: false,
+    },
+    {
+      id: "currency",
+      icon: <DollarSign className="h-5 w-5" />,
+      label: t("profile.menu.currency"),
+      href: "/profile/currency",
+      requiresAuth: false,
+    },
+    {
+      id: "faq",
+      icon: <HelpCircle className="h-5 w-5" />,
+      label: t("profile.menu.faq"),
+      href: "/faq",
+      requiresAuth: false,
+    },
+    {
+      id: "about",
+      icon: <Info className="h-5 w-5" />,
+      label: t("profile.menu.aboutUs"),
+      href: "/about",
+      requiresAuth: false,
+    },
+  ];
+
+  const handleMenuClick = (item: ProfileMenuItem) => {
+    // Для разделов, не требующих авторизации, переходим сразу
+    if (!item.requiresAuth) {
+      if (item.action) {
+        item.action();
+      } else if (item.href) {
+        router.push(item.href);
+      }
+      return;
+    }
+
+    // Для разделов, требующих авторизации, проверяем пользователя
+    if (item.requiresAuth && !user) {
+      router.push("/auth");
+      return;
+    }
+
+    // Пользователь авторизован, выполняем действие
+    if (item.action) {
+      item.action();
+    } else if (item.href) {
+      router.push(item.href);
     }
   };
 
-  if (loading) {
+  if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background pb-16 md:pb-0">
         <Navigation />
         <main className="pt-20 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="px-8 sm:px-12 lg:px-16">
             <Skeleton className="h-12 w-64 mb-8" />
-            <Skeleton className="h-96" />
+            <div className="space-y-4">
+              {[...Array(8)].map((_, i) => (
+                <Skeleton key={i} className="h-16 w-full" />
+              ))}
+            </div>
           </div>
         </main>
         <MobileBottomNav />
@@ -118,142 +176,95 @@ export default function ProfilePage() {
       <Navigation />
 
       <main className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
-              {t("profile.title")}
-            </h1>
-            <p className="text-muted-foreground">
-              {t("profile.subtitle")}
-            </p>
+        <div className="px-8 sm:px-12 lg:px-16">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-2xl font-bold">{t("profile.pageTitle")}</h1>
+            
+            {!user ? (
+              <Button 
+                onClick={handleLogin}
+                className="bg-black text-white hover:bg-gray-800 rounded-full px-6"
+              >
+                {t("profile.login")}
+              </Button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                <span className="text-sm">{user.fullName}</span>
+              </div>
+            )}
           </div>
 
-          <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="profile">{t("profile.tab.profile")}</TabsTrigger>
-              <TabsTrigger value="orders">{t("profile.tab.orders")}</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="profile" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    {t("profile.personalInfo")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">{t("profile.fullName")}</Label>
-                    <Input
-                      id="fullName"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      disabled
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t("profile.email")}</Label>
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled
-                      />
+          {/* Menu Items */}
+          <div className="space-y-1">
+            {menuItems.map((item) => {
+              // Разделы, не требующие авторизации, всегда доступны
+              // Разделы, требующие авторизации, доступны только авторизованным пользователям
+              const isAccessible = !item.requiresAuth || user;
+              
+              return (
+                <Card 
+                  key={item.id} 
+                  className="border-0 shadow-none bg-transparent hover:bg-muted/50 transition-colors cursor-pointer"
+                  onClick={() => handleMenuClick(item)}
+                >
+                  <CardContent className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`${!isAccessible ? 'opacity-50' : ''}`}>
+                        {item.icon}
+                      </div>
+                      <span className={`font-medium ${!isAccessible ? 'opacity-50' : ''}`}>
+                        {item.label}
+                      </span>
+                      {!isAccessible && (
+                        <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                          {t("profile.loginRequired")}
+                        </span>
+                      )}
                     </div>
-                  </div>
-                  <div className="pt-4">
-                    <Button
-                      variant="destructive"
-                      onClick={handleSignOut}
-                      className="w-full sm:w-auto"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      {t("profile.signOut")}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="orders" className="space-y-6">
-              {orders.length === 0 ? (
-                <Card>
-                  <CardContent className="py-12 text-center">
-                    <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                    <p className="text-xl text-muted-foreground mb-4">
-                      {t("profile.noOrders")}
-                    </p>
-                    <Button onClick={() => router.push("/shop")}>
-                      {t("profile.startShopping")}
-                    </Button>
+                    <ChevronRight className={`h-4 w-4 text-muted-foreground ${!isAccessible ? 'opacity-50' : ''}`} />
                   </CardContent>
                 </Card>
-              ) : (
-                <div className="space-y-4">
-                  {orders.map((order) => (
-                    <Card key={order.id}>
-                      <CardContent className="p-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
-                              {t("profile.order")} #{order.id.slice(0, 8)}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {formatDate(order.createdAt)}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-4 mt-2 sm:mt-0">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                                order.status
-                              )}`}
-                            >
-                              {t(`status.${order.status.toLowerCase()}`)}
-                            </span>
-                            <p className="text-lg font-bold">
-                              ${order.total.toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
+              );
+            })}
 
-                        <div className="space-y-3">
-                          {order.items.map((item, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-4 py-2 border-t border-border/50"
-                            >
-                              <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                                <img
-                                  src={item.product.images[0] || "/placeholder.svg"}
-                                  alt={item.product.name}
-                                  className="w-full h-full object-contain p-1"
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-medium text-sm">
-                                  {item.product.name}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {t("profile.quantity")}: {item.quantity}
-                                </p>
-                              </div>
-                              <p className="font-semibold">
-                                ${(item.price * item.quantity).toLocaleString()}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+            {/* Theme Toggle */}
+            <Card className="border-0 shadow-none bg-transparent">
+              <CardContent className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  {theme === "light" ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )}
+                  <span className="font-medium">
+                    {theme === "light" ? "Light theme" : "Dark theme"}
+                  </span>
                 </div>
-              )}
-            </TabsContent>
-          </Tabs>
+                <Switch
+                  checked={theme === "light"}
+                  onCheckedChange={toggleTheme}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Sign Out Button (only if logged in) */}
+            {user && (
+              <Card 
+                className="border-0 shadow-none bg-transparent hover:bg-red-50 transition-colors cursor-pointer mt-8"
+                onClick={handleSignOut}
+              >
+                <CardContent className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    <LogIn className="h-5 w-5 text-red-600" />
+                    <span className="font-medium text-red-600">Sign Out</span>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-red-600" />
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </main>
 

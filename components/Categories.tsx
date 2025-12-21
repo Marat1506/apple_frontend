@@ -23,9 +23,9 @@ const Categories = () => {
 
   return (
     <section className="py-12 bg-background border-y border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-8 sm:px-12 lg:px-16">
         {/* Horizontal scrollable on mobile, grid on desktop */}
-        <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+        <div className="overflow-x-auto -mx-8 sm:-mx-12 lg:-mx-16 md:mx-0 px-8 sm:px-12 lg:px-16 md:px-0">
           <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-4 min-w-max sm:min-w-0">
             {categories.map((category, index) => {
               const Icon = category.icon;

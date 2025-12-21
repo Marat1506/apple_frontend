@@ -41,7 +41,7 @@ const Accessories = () => {
 
   return (
     <section className="py-24 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-8 sm:px-12 lg:px-16">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-12 animate-fade-in-up">
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
@@ -80,7 +80,7 @@ const Accessories = () => {
         </div>
 
         {/* Accessories - Horizontal Scrollable on Mobile, Grid on Desktop */}
-        <div className="overflow-x-auto md:overflow-x-visible -mx-4 sm:mx-0 px-4 sm:px-0">
+        <div className="overflow-x-auto md:overflow-x-visible -mx-8 sm:-mx-12 lg:-mx-16 md:mx-0 px-8 sm:px-12 lg:px-16 md:px-0">
           <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 min-w-max md:min-w-0">
             {accessories.map((accessory, index) => (
               <div

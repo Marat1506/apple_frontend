@@ -103,7 +103,7 @@ export default function FavoritesPage() {
       <div className="min-h-screen bg-background pb-16 md:pb-0">
         <Navigation />
         <main className="pt-20 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="px-8 sm:px-12 lg:px-16">
             <Skeleton className="h-12 w-64 mb-8" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
@@ -122,7 +122,7 @@ export default function FavoritesPage() {
       <Navigation />
 
       <main className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-8 sm:px-12 lg:px-16">
           <div className="flex items-center gap-3 mb-8">
             <Heart className="w-8 h-8 text-red-500 fill-current" />
             <h1 className="text-4xl md:text-5xl font-bold text-foreground">

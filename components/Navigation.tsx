@@ -20,7 +20,7 @@ const Navigation = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50">
-      <div className="max-w-[980px] mx-auto px-6">
+      <div className="px-8 sm:px-12 lg:px-16">
         <div className="flex items-center justify-between h-11">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -75,24 +75,12 @@ const Navigation = () => {
             </button>
 
             {/* User Profile */}
-            {user ? (
-              <button 
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => router.push("/profile")}
-              >
-                <User className="h-4 w-4" />
-              </button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => router.push("/auth")}
-                className="text-[12px] h-7 px-3 text-muted-foreground hover:text-foreground"
-              >
-                <User className="h-4 w-4 mr-1" />
-                {t("nav.signIn")}
-              </Button>
-            )}
+            <button 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => router.push("/profile")}
+            >
+              <User className="h-4 w-4" />
+            </button>
           </div>
 
           {/* Mobile Language & Currency Selectors */}

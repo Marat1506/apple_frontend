@@ -223,7 +223,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-background pb-16 md:pb-0">
         <Navigation />
         <main className="pt-20 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="px-8 sm:px-12 lg:px-16">
             <Skeleton className="h-12 w-64 mb-8" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <Skeleton className="h-96" />
@@ -241,7 +241,7 @@ export default function CheckoutPage() {
       <Navigation />
 
       <main className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-2">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
             {t("checkout.title")}
           </h1>

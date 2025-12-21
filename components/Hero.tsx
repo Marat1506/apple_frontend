@@ -53,7 +53,7 @@ const Hero = () => {
 
   return (
     <section className="relative bg-black text-white overflow-hidden">
-      <div className="max-w-[980px] mx-auto px-6 pt-32 pb-20 text-center">
+      <div className="px-8 sm:px-12 lg:px-16 pt-32 pb-20 text-center">
         {/* Main Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4 animate-fade-in-up">
           {heroData.title}

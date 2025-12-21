@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
@@ -24,17 +25,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <LanguageProvider>
-          <CurrencyProvider>
-            <AuthProvider>
-              <FavoritesProvider>
-                <CartProvider>{children}</CartProvider>
-              </FavoritesProvider>
-            </AuthProvider>
-          </CurrencyProvider>
-        </LanguageProvider>
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+        <TooltipProvider>
+          <LanguageProvider>
+            <CurrencyProvider>
+              <AuthProvider>
+                <FavoritesProvider>
+                  <CartProvider>{children}</CartProvider>
+                </FavoritesProvider>
+              </AuthProvider>
+            </CurrencyProvider>
+          </LanguageProvider>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
