@@ -12,16 +12,16 @@ import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ArrowLeft, Check } from "lucide-react";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { Currency } from "@/lib/currency";
+import { Currency as CurrencyType } from "@/lib/currency";
 
-interface Currency {
+interface CurrencyInterface {
   code: string;
   name: string;
   symbol: string;
   flag: string;
 }
 
-const currencies: Currency[] = [
+const currencies: CurrencyInterface[] = [
   { code: "USD", name: "US Dollar", symbol: "$", flag: "🇺🇸" },
   { code: "EUR", name: "Euro", symbol: "€", flag: "🇪🇺" },
   { code: "RUB", name: "Russian Ruble", symbol: "₽", flag: "🇷🇺" },
@@ -34,7 +34,7 @@ export default function CurrencyPage() {
   const [selectedCurrency, setSelectedCurrency] = useState(currency);
 
   const handleSave = () => {
-    setCurrency(selectedCurrency as Currency);
+    setCurrency(selectedCurrency as CurrencyType);
     toast({
       title: "Currency Updated",
       description: `Currency changed to ${currencies.find(c => c.code === selectedCurrency)?.name}`,
