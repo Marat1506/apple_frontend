@@ -31,7 +31,7 @@ const currencies: CurrencyInterface[] = [
 export default function CurrencyPage() {
   const router = useRouter();
   const { currency, setCurrency } = useCurrency();
-  const [selectedCurrency, setSelectedCurrency] = useState(currency);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
 
   const handleSave = () => {
     setCurrency(selectedCurrency as CurrencyType);
@@ -40,6 +40,10 @@ export default function CurrencyPage() {
       description: `Currency changed to ${currencies.find(c => c.code === selectedCurrency)?.name}`,
     });
     router.back();
+  };
+
+  const handleCurrencyChange = (value: string) => {
+    setSelectedCurrency(value);
   };
 
   return (
@@ -66,7 +70,7 @@ export default function CurrencyPage() {
             <CardContent className="p-4">
               <RadioGroup
                 value={selectedCurrency}
-                onValueChange={setSelectedCurrency}
+                onValueChange={handleCurrencyChange}
                 className="space-y-3"
               >
                 {currencies.map((currency) => (
