@@ -133,50 +133,50 @@ export default function FAQPage() {
           {loading ? (
             <div className="text-center py-8 text-muted-foreground">Loading...</div>
           ) : (
-            <div className="space-y-4">
+          <div className="space-y-4">
               {filteredFAQ.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">No FAQs found</div>
               ) : (
                 filteredFAQ.map((item) => {
                   const translated = getTranslatedFAQ(item);
                   return (
-                    <Card key={item.id}>
-                      <Collapsible
-                        open={openItems.includes(item.id)}
-                        onOpenChange={() => toggleItem(item.id)}
-                      >
-                        <CollapsibleTrigger asChild>
-                          <CardContent className="p-4 cursor-pointer hover:bg-muted/50 transition-colors">
-                            <div className="flex items-center justify-between">
-                              <div className="text-left">
+              <Card key={item.id}>
+                <Collapsible
+                  open={openItems.includes(item.id)}
+                  onOpenChange={() => toggleItem(item.id)}
+                >
+                  <CollapsibleTrigger asChild>
+                    <CardContent className="p-4 cursor-pointer hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="text-left">
                                 <p className="font-medium">{translated.question}</p>
-                                <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-muted-foreground mt-1">
                                   {translated.category}
-                                </p>
-                              </div>
-                              {openItems.includes(item.id) ? (
-                                <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                              )}
-                            </div>
-                          </CardContent>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <CardContent className="pt-0 px-4 pb-4">
-                            <div className="border-t pt-4">
-                              <p className="text-muted-foreground leading-relaxed">
+                          </p>
+                        </div>
+                        {openItems.includes(item.id) ? (
+                          <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </div>
+                    </CardContent>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <CardContent className="pt-0 px-4 pb-4">
+                      <div className="border-t pt-4">
+                        <p className="text-muted-foreground leading-relaxed">
                                 {translated.answer}
-                              </p>
-                            </div>
-                          </CardContent>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </Card>
+                        </p>
+                      </div>
+                    </CardContent>
+                  </CollapsibleContent>
+                </Collapsible>
+              </Card>
                   );
                 })
               )}
-            </div>
+          </div>
           )}
 
         </div>

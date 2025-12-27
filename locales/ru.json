@@ -3,12 +3,15 @@
   "nav.cart": "Корзина",
   "nav.profile": "Профиль",
   "nav.signIn": "Войти",
+  "nav.signUp": "Регистрация",
   "nav.signOut": "Выйти",
   "nav.home": "Главная",
   
   "home.hero.title": "Добро пожаловать в Dubliz",
   "home.hero.subtitle": "Откройте для себя премиальные продукты Apple",
-  "home.store.title": "Магазин",
+  "hero.learnMore": "Узнать больше",
+  "hero.buy": "Купить",
+  "home.store.title": "Популярные",
   "home.store.subtitle": "Избранные товары",
   "home.viewAll": "Смотреть все",
   "home.accessories.title": "Аксессуары",
@@ -65,6 +68,8 @@
   "shop.clearFilters": "Очистить фильтры",
   
   "product.addToCart": "Добавить в корзину",
+  "product.learnMore": "Подробнее",
+  "product.addToCartShort": "В корзину",
   "product.adding": "Добавление...",
   "product.outOfStock": "Нет в наличии",
   "product.view": "Просмотр",
@@ -75,6 +80,7 @@
   
   "cart.title": "Корзина покупок",
   "cart.empty": "Ваша корзина пуста",
+  "cart.loginRequired": "Пожалуйста, войдите, чтобы просмотреть корзину",
   "cart.continueShopping": "Продолжить покупки",
   "cart.remove": "Удалить",
   "cart.summary": "Итого",

@@ -42,7 +42,7 @@ export default function CartPage() {
 
   const fetchCart = async () => {
     if (!user) {
-      router.push("/auth");
+      setLoading(false);
       return;
     }
 
@@ -122,10 +122,15 @@ export default function CartPage() {
       <Navigation />
       
       <main className="pt-20 pb-16 min-h-[calc(100vh-200px)]">
-        <div className="px-2">
+        <div className="px-8 sm:px-12 lg:px-16">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">{t("cart.title")}</h1>
 
-          {cartItems.length === 0 ? (
+          {!user ? (
+            <div className="text-center py-16">
+              <p className="text-xl text-muted-foreground mb-8">{t("cart.loginRequired")}</p>
+              <Button onClick={() => router.push("/auth")}>{t("nav.signIn")}</Button>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-xl text-muted-foreground mb-8">{t("cart.empty")}</p>
               <Button onClick={() => router.push("/")}>{t("cart.continueShopping")}</Button>

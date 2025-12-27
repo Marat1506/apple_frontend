@@ -21,7 +21,6 @@ const MobileBottomNav = () => {
 
   const navItems = [
     { icon: Home, label: t("nav.home") || "Home", path: "/" },
-    ...(user ? [{ icon: Heart, label: t("favorites.title") || "Favorites", path: "/favorites", count: favorites.length }] : []),
     { icon: ShoppingBag, label: t("nav.cart") || "Bag", path: "/cart" },
     { icon: User, label: t("nav.profile") || "Account", path: "/profile" },
   ];

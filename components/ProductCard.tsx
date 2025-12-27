@@ -1,11 +1,12 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight } from "lucide-react";
 import { FavoriteButton } from "./FavoriteButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ProductCardProps {
   id: string;
@@ -15,19 +16,30 @@ interface ProductCardProps {
   badge?: string;
   gradient: string;
   image?: string | null;
+  images?: string[];
   slug?: string;
 }
 
-const ProductCard = ({ id, name, tagline, price, badge, gradient, image, slug }: ProductCardProps) => {
+const ProductCard = ({ id, name, tagline, price, badge, gradient, image, images, slug }: ProductCardProps) => {
   const router = useRouter();
+  const { t } = useLanguage();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
-  // Color options for products (can be made dynamic later)
-  const colorOptions = [
-    { color: "#FF6B35", name: "orange" },
-    { color: "#4ECDC4", name: "blue" },
-    { color: "#C7CEEA", name: "purple" },
-    { color: "#FFE66D", name: "yellow" },
-  ];
+  // Get all images - prioritize images array, fallback to single image
+  // Filter out empty strings, null values, and undefined
+  const filteredImages = images && Array.isArray(images) 
+    ? images.filter(img => img && typeof img === 'string' && img.trim() !== '') 
+    : [];
+  
+  const allImages = filteredImages.length > 0 
+    ? filteredImages 
+    : (image && typeof image === 'string' && image.trim() !== '' ? [image] : []);
+  
+  // Only show indicators if there are actually 2 or more valid images
+  const hasMultipleImages = allImages.length > 1;
 
   const handleClick = () => {
     if (slug) {
@@ -35,10 +47,66 @@ const ProductCard = ({ id, name, tagline, price, badge, gradient, image, slug }:
     }
   };
 
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleClick();
+  };
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
+  const nextImage = () => {
+    if (hasMultipleImages) {
+      setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (hasMultipleImages) {
+      setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    }
+  };
+
+  // Swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    
+    const diff = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (Math.abs(diff) > minSwipeDistance) {
+      if (diff > 0) {
+        // Swipe left - next image
+        nextImage();
+      } else {
+        // Swipe right - previous image
+        prevImage();
+      }
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
     <Card className="group overflow-hidden hover-lift border-border/50 bg-card cursor-pointer h-full flex flex-col">
-      <CardHeader className="relative h-64 p-0 overflow-hidden" onClick={handleClick}>
-        <div className={`w-full h-full ${gradient} flex items-center justify-center relative bg-background`}>
+      <CardHeader className="relative h-64 p-0 overflow-hidden">
+        <div 
+          ref={imageContainerRef}
+          className={`w-full h-full ${gradient} flex items-center justify-center relative bg-background`}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {badge && (
             <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground z-10">
               {badge}
@@ -49,61 +117,79 @@ const ProductCard = ({ id, name, tagline, price, badge, gradient, image, slug }:
           <div className="absolute top-4 right-4 z-10">
             <FavoriteButton productId={id} size="sm" />
           </div>
-          {/* Product image */}
-          {image ? (
-            <img
-              src={image}
-              alt={name}
-              className="w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-              loading="lazy"
-            />
+
+          {/* Product images carousel */}
+          {allImages.length > 0 ? (
+            <div className="relative w-full h-full overflow-hidden">
+              {allImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`${name} - ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-300 ${
+                    index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  loading={index === 0 ? "lazy" : "lazy"}
+                  onClick={handleImageClick}
+                />
+              ))}
+            </div>
           ) : (
             <div className="w-40 h-40 rounded-3xl bg-background/20 backdrop-blur-sm animate-float" />
           )}
+
+          {/* Hover overlay */}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-300" />
         </div>
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-300" />
+
+        {/* Carousel indicators */}
+        {hasMultipleImages && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+            {allImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToImage(index);
+                }}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  index === currentImageIndex
+                    ? 'bg-primary w-6'
+                    : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+                }`}
+                aria-label={`Go to image ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </CardHeader>
       
       <CardContent className="p-6 space-y-3 flex-grow">
-        <h3 className="text-xl font-bold text-foreground leading-tight">{name}</h3>
-        <p className="text-sm text-muted-foreground line-clamp-2">{tagline}</p>
-        <p className="text-lg font-semibold text-foreground pt-1">{price}</p>
-        
-        {/* Color dots */}
-        <div className="flex gap-2 pt-2">
-          {colorOptions.slice(0, 4).map((option, index) => (
-            <div
-              key={index}
-              className="w-3 h-3 rounded-full border border-border/50"
-              style={{ backgroundColor: option.color }}
-              title={option.name}
-            />
-          ))}
-        </div>
+        <h3 className="text-xl font-bold text-foreground leading-tight text-center">{name}</h3>
+        <p className="text-sm text-muted-foreground line-clamp-2 text-center">{tagline}</p>
+        {price && <p className="text-lg font-semibold text-foreground pt-1 text-center">{price}</p>}
       </CardContent>
       
-      <CardFooter className="p-6 pt-0 flex flex-col sm:flex-row gap-3">
+      <CardFooter className="p-6 pt-0 flex gap-3 justify-center">
         <Button 
-          variant="link" 
-          className="p-0 h-auto text-primary hover:text-primary/80 group/btn"
+          variant="default"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
           }}
         >
-          Learn more
+          {t("product.learnMore")}
         </Button>
         <Button 
-          variant="link" 
-          className="p-0 h-auto text-primary hover:text-primary/80 group/btn flex items-center"
+          variant="outline"
+          className="border-primary text-primary hover:bg-primary/10 rounded-full px-6"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
           }}
         >
-          Buy
-          <ChevronRight className="ml-1 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+          {t("product.addToCartShort")}
         </Button>
       </CardFooter>
     </Card>

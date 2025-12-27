@@ -3,12 +3,15 @@
   "nav.cart": "Cart",
   "nav.profile": "Profile",
   "nav.signIn": "Sign In",
+  "nav.signUp": "Sign Up",
   "nav.signOut": "Sign Out",
   "nav.home": "Home",
   
   "home.hero.title": "Welcome to Dubliz",
   "home.hero.subtitle": "Discover premium Apple products",
-  "home.store.title": "Store",
+  "hero.learnMore": "Learn more",
+  "hero.buy": "Buy",
+  "home.store.title": "Popular",
   "home.store.subtitle": "Featured products",
   "home.viewAll": "View all",
   "home.accessories.title": "Accessories",
@@ -65,6 +68,8 @@
   "shop.clearFilters": "Clear filters",
   
   "product.addToCart": "Add to Cart",
+  "product.learnMore": "Learn more",
+  "product.addToCartShort": "Add to cart",
   "product.adding": "Adding...",
   "product.outOfStock": "Out of Stock",
   "product.view": "View",
@@ -75,6 +80,7 @@
   
   "cart.title": "Shopping Cart",
   "cart.empty": "Your cart is empty",
+  "cart.loginRequired": "Please sign in to view your cart",
   "cart.continueShopping": "Continue Shopping",
   "cart.remove": "Remove",
   "cart.summary": "Summary",

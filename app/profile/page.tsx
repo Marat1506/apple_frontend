@@ -81,7 +81,7 @@ export default function ProfilePage() {
       icon: <ShoppingBag className="h-5 w-5" />,
       label: t("profile.menu.cart"),
       href: "/cart",
-      requiresAuth: false,
+      requiresAuth: true,
     },
     // {
     //   id: "invoice",

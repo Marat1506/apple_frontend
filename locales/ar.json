@@ -3,12 +3,15 @@
   "nav.cart": "السلة",
   "nav.profile": "الملف الشخصي",
   "nav.signIn": "تسجيل الدخول",
+  "nav.signUp": "التسجيل",
   "nav.signOut": "تسجيل الخروج",
   "nav.home": "الرئيسية",
   
   "home.hero.title": "مرحباً بك في Dubliz",
   "home.hero.subtitle": "اكتشف منتجات Apple المميزة",
-  "home.store.title": "المتجر",
+  "hero.learnMore": "اعرف المزيد",
+  "hero.buy": "شراء",
+  "home.store.title": "شائع",
   "home.store.subtitle": "المنتجات المميزة",
   "home.viewAll": "عرض الكل",
   "home.accessories.title": "الإكسسوارات",
@@ -65,6 +68,8 @@
   "shop.clearFilters": "مسح الفلاتر",
   
   "product.addToCart": "أضف إلى السلة",
+  "product.learnMore": "اعرف المزيد",
+  "product.addToCartShort": "إلى السلة",
   "product.adding": "جاري الإضافة...",
   "product.outOfStock": "غير متوفر",
   "product.view": "عرض",
@@ -75,6 +80,7 @@
   
   "cart.title": "سلة التسوق",
   "cart.empty": "سلتك فارغة",
+  "cart.loginRequired": "يرجى تسجيل الدخول لعرض سلة التسوق",
   "cart.continueShopping": "متابعة التسوق",
   "cart.remove": "إزالة",
   "cart.summary": "الملخص",

@@ -4,7 +4,9 @@ import { useEffect, useState, Suspense } from "react";
 import { api } from "@/lib/api";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import ShopProductCard from "@/components/ShopProductCard";
+import ProductCard from "@/components/ProductCard";
+import { useCurrency } from "@/contexts/CurrencyContext";
+import { formatPrice } from "@/lib/currency";
 import { Filter, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 
 function ShopContent() {
   const { t, language } = useLanguage();
+  const { currency } = useCurrency();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -240,10 +243,24 @@ function ShopContent() {
               </div>
 
               {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredProducts.map((product) => (
-                    <ShopProductCard key={product.id} product={product} />
-                  ))}
+                <div className="overflow-x-auto md:overflow-x-visible -mx-8 sm:-mx-12 lg:-mx-16 md:mx-0 px-8 sm:px-12 lg:px-16 md:px-0">
+                  <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 min-w-max md:min-w-0">
+                    {filteredProducts.map((product) => (
+                      <div key={product.id} className="flex-shrink-0 w-[280px] md:w-auto">
+                        <ProductCard
+                          id={product.id}
+                          name={product.name}
+                          tagline={product.description || ""}
+                          price={`${t("product.from")} ${formatPrice(product.price, currency)}`}
+                          badge={product.badge || undefined}
+                          gradient="bg-gradient-to-br from-muted to-background"
+                          images={product.images || []}
+                          image={product.images?.[0] || null}
+                          slug={product.slug}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12">

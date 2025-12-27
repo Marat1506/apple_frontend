@@ -60,8 +60,7 @@ const ProductShowcase = () => {
         <div className="px-8 sm:px-12 lg:px-16">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">{t("home.store.title")}</h2>
-            <p className="text-xl text-muted-foreground">{t("home.store.subtitle")}</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">{t("home.store.title")}</h2>
           </div>
           <Button
             variant="ghost"
@@ -73,20 +72,25 @@ const ProductShowcase = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              tagline={product.description || ""}
-              price={`${t("product.from")} ${formatPrice(product.price, currency)}`}
-              badge={product.badge || undefined}
-              gradient="bg-gradient-to-br from-muted to-background"
-              image={product.images?.[0] || null}
-              slug={product.slug}
-            />
-          ))}
+        {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+        <div className="overflow-x-auto md:overflow-x-visible -mx-8 sm:-mx-12 lg:-mx-16 md:mx-0 px-8 sm:px-12 lg:px-16 md:px-0">
+          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-6 min-w-max md:min-w-0">
+            {products.map((product) => (
+              <div key={product.id} className="flex-shrink-0 w-[280px] md:w-auto">
+                <ProductCard
+                  id={product.id}
+                  name={product.name}
+                  tagline={product.description || ""}
+                  price={`${t("product.from")} ${formatPrice(product.price, currency)}`}
+                  badge={product.badge || undefined}
+                  gradient="bg-gradient-to-br from-muted to-background"
+                  images={product.images || []}
+                  image={product.images?.[0] || null}
+                  slug={product.slug}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
