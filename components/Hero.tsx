@@ -68,7 +68,7 @@ const Hero = () => {
             <img
               src={`${process.env.NEXT_PUBLIC_API_URL || ""}${heroData.imageMobile}`}
               alt="Background"
-              className="md:hidden w-full h-full object-cover"
+              className="md:hidden w-full h-full object-contain"
             />
           )}
         </div>
