@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "./FavoriteButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 
 interface ProductCardProps {
   id: string;
@@ -23,7 +27,11 @@ interface ProductCardProps {
 const ProductCard = ({ id, name, tagline, price, badge, gradient, image, images, slug }: ProductCardProps) => {
   const router = useRouter();
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const { refreshCart } = useCart();
+  const { toast } = useToast();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -44,6 +52,38 @@ const ProductCard = ({ id, name, tagline, price, badge, gradient, image, images,
   const handleClick = () => {
     if (slug) {
       router.push(`/product/${slug}`);
+    }
+  };
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!user) {
+      toast({
+        title: t("toast.signInRequired"),
+        description: t("toast.signInToAddToCart"),
+        variant: "destructive",
+      });
+      router.push("/auth");
+      return;
+    }
+
+    setIsAddingToCart(true);
+    try {
+      await api.cart.add(id, 1);
+      await refreshCart();
+      toast({
+        title: t("toast.addedToCart"),
+        description: `${name} ${t("product.hasBeenAdded")}`,
+      });
+    } catch (error: any) {
+      toast({
+        title: t("toast.error"),
+        description: error.message || "Failed to add item to cart",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
@@ -184,12 +224,10 @@ const ProductCard = ({ id, name, tagline, price, badge, gradient, image, images,
         <Button 
           variant="outline"
           className="border-primary text-primary hover:bg-primary/10 rounded-full px-6"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick();
-          }}
+          onClick={handleAddToCart}
+          disabled={isAddingToCart}
         >
-          {t("product.addToCartShort")}
+          {isAddingToCart ? t("product.adding") : t("product.addToCartShort")}
         </Button>
       </CardFooter>
     </Card>
