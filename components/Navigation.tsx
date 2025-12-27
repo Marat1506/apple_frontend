@@ -19,6 +19,20 @@ const Navigation = () => {
   const { t } = useLanguage();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setShowProfileMenu(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setShowProfileMenu(false);
+    }, 150); // 150ms delay before closing
+  };
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -34,6 +48,9 @@ const Navigation = () => {
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
     };
   }, [showProfileMenu]);
 
@@ -149,8 +166,8 @@ const Navigation = () => {
             <div 
               ref={profileMenuRef}
               className="relative"
-              onMouseEnter={() => setShowProfileMenu(true)}
-              onMouseLeave={() => setShowProfileMenu(false)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <button 
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -161,7 +178,7 @@ const Navigation = () => {
 
               {/* Dropdown Menu */}
               {showProfileMenu && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-card border border-border rounded-lg shadow-lg z-50">
+                <div className="absolute right-0 top-full mt-1 w-64 bg-card border border-border rounded-lg shadow-lg z-50">
                   <div className="p-4">
                     {/* App Name */}
                     <div className="text-center mb-4">
