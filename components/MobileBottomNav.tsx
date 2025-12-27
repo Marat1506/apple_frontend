@@ -43,9 +43,9 @@ const MobileBottomNav = () => {
             >
               <Icon className="h-5 w-5" />
               <span className="text-[10px] font-medium">{item.label}</span>
-              {item.count && item.count > 0 && (
+              {item.path === "/cart" && favorites.length > 0 && (
                 <span className="absolute top-2 right-1/2 translate-x-2 bg-red-500 text-white text-[8px] rounded-full w-3 h-3 flex items-center justify-center">
-                  {item.count > 9 ? '9+' : item.count}
+                  {favorites.length > 9 ? '9+' : favorites.length}
                 </span>
               )}
             </Link>
